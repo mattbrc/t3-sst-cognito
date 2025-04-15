@@ -39,9 +39,9 @@ export default $config({
         NEXT_PUBLIC_REGION: "us-east-1",
         NEXT_PUBLIC_USER_POOL_ID: userPool.id,
         NEXT_PUBLIC_USER_POOL_CLIENT_ID: webClient.id,
-        COGNITO_USER_POOL_ID: userPool.id,
-        COGNITO_APP_CLIENT_ID: webClient.id, 
-        AWS_REGION: "us-east-1",
+        // COGNITO_USER_POOL_ID: userPool.id,
+        // COGNITO_APP_CLIENT_ID: webClient.id, 
+        // AWS_REGION: "us-east-1",
       }
     });
 

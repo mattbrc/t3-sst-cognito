@@ -31,9 +31,11 @@ interface CreateContextOptions {
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: CreateContextOptions) => {
-  
+  const user = await AuthGetCurrentUserServer();
+
   return {
     db,
+    user,
     ...opts,
   };
 };
@@ -112,15 +114,15 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  */
 export const publicProcedure = t.procedure.use(timingMiddleware);
 
-// const enforceUserIsAuthed = t.middleware(({ next, ctx }) => {
-//   if (!ctx.auth?.userId) {
-//     throw new TRPCError({ code: "UNAUTHORIZED" });
-//   }
-//   return next({
-//     ctx: {
-//       userId: ctx.auth.userId,
-//     },
-//   });
-// });
+const enforceUserIsAuthed = t.middleware(({ next, ctx }) => {
+  if (!ctx.user?.userId) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({
+    ctx: {
+      userId: ctx.user.userId,
+    },
+  });
+});
 
-// export const privateProcedure = t.procedure.use(enforceUserIsAuthed);
+export const privateProcedure = t.procedure.use(enforceUserIsAuthed);

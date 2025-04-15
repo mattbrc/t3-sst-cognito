@@ -1,12 +1,19 @@
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, publicProcedure, privateProcedure } from "~/server/api/trpc";
 import { posts } from "~/server/db/schema";
+import { AuthGetSessionServer } from "~/utils/amplify-server-utils";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
+  hello: privateProcedure
     .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
+    .query(async({ ctx, input }) => {
+      const user = ctx.user;
+      const userId = user?.userId;
+      const session = await AuthGetSessionServer();
+      console.log("User from trpc context: ", user);
+      console.log("User ID from trpc context: ", userId);
+      console.log("Session from trpc context: ", session);
       return {
         greeting: `Hello ${input.text}`,
       };

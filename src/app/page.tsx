@@ -8,8 +8,8 @@ import { AuthGetCurrentUserServer } from "~/utils/amplify-server-utils";
 export default async function Home() {
   const hello = await api.post.hello({ text: "from tRPC" });
 
-  const currentUser = await AuthGetCurrentUserServer();
-  console.log(currentUser);
+  // const currentUser = await AuthGetCurrentUserServer();
+  // console.log(currentUser);
 
   void api.post.getLatest.prefetch();
 
